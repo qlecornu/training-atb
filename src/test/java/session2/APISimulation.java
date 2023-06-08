@@ -17,7 +17,8 @@ public class APISimulation extends Simulation {
                     .exec(http("authentication")
                             .post("/api/authenticate")
                             .body(StringBody("{\"username\": \"#{username}\",\"password\": \"#{password}\"}")) // (2)
-                            .check(jmesPath("token").saveAs("jwt"))) // (3)
+                            .check(jmesPath("token").saveAs("jwt")))
+                    .pause(1,5)// (3)
                     .exec(http("List Categories")
                             .get("/api/category") // (4)
                             .header("Authorization", "Bearer #{jwt}") // (5)
@@ -38,7 +39,7 @@ public class APISimulation extends Simulation {
 
     {
         setUp(
-                scenario.injectOpen(stressPeakUsers(2000).during(10))
+                scenario.injectOpen(stressPeakUsers(3000).during(10))
                         .protocols(httpProtocol));
     }
 }
